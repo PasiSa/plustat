@@ -3,3 +3,4 @@ config-minus.py
 config-plus.py
 __pycache__
 logs.txt
+*.png

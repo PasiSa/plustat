@@ -64,14 +64,17 @@ def insert_monthly_entry(
     execute_query(db, query)
 
 
-def list_monthly_entries(db: sqlite3.Connection) -> None:
+def build_monthly_dict(db: sqlite3.Connection) -> dict:
     query = """
-    SELECT * from monthly
+    SELECT * from monthly order by year,month;
     """
     entries = execute_read_query(db, query)
+    data = {}
     for entry in entries:
-        print(entry)
+        key = f"{entry[1]}-{entry[2]}"
+        data[key] = list(entry)
 
+    return data
 
 def month_exists(db: sqlite3.Connection, year: int, month: int) -> bool:
     query = f"""
@@ -90,6 +93,9 @@ if __name__ == '__main__':
 
     settings = importlib.import_module(sys.argv[1])
     db = create_connection(settings.DB_FILE)
-    create_monthly_table(db)
-    #list_monthly_entries(db)
+    #create_monthly_table(db)
+
+    # Just testing
+    monthly = build_monthly_dict(db)
+    print(monthly)
 
