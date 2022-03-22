@@ -4,8 +4,10 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
-from database import create_connection, build_monthly_dict
+from database import Database
+from monthly import build_monthly_dict
 
+settings = None
 
 def monthly_common(ydata, tickinterval, hlines, ylabel, filename):
     x = 0.5 + np.arange(len(ydata))
@@ -23,7 +25,6 @@ def monthly_common(ydata, tickinterval, hlines, ylabel, filename):
     for a in xticks:
         ax.axvline(x=a, color='lightgray', linestyle='--')
 
-    #yy = list(range(100000, 300000, 100000))
     for a in hlines:
         ax.axhline(y=a, color='lightgray', linestyle=':')
 
@@ -32,6 +33,8 @@ def monthly_common(ydata, tickinterval, hlines, ylabel, filename):
 
 
 def monthly_submissions(data):
+    from main import settings
+
     y = []
     for key in data:
         y.append(data[key][3])
@@ -41,7 +44,7 @@ def monthly_submissions(data):
         20000,
         list(range(100000, 300000, 100000)),
         'submissions / month',
-        'submissons.png',
+        f"{settings.OUTPUT_DIR}/submissions-monthly.png",
     )
 
 
@@ -55,7 +58,7 @@ def monthly_submitters(data):
         200,
         list(range(1000, 4000, 1000)),
         'submitters / month',
-        'submitters.png',
+        f"{settings.OUTPUT_DIR}/submitters-monthly.png",
     )
 
 
@@ -79,7 +82,8 @@ if __name__ == '__main__':
         exit(-1)
 
     settings = importlib.import_module(sys.argv[1])
-    db = create_connection(settings.DB_FILE)
+    #db = create_connection(settings.DB_FILE)
+    db = Database()
     data = build_monthly_dict(db)
     monthly_submissions(data)
     monthly_submitters(data)
