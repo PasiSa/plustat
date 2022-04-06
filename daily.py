@@ -2,7 +2,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from database import Database
-from collector import api_request
+from collector import stats_api_request
 
 def create_daily_table(db: Database) -> None:
     query = """
@@ -63,12 +63,12 @@ def get_day(db: Database, date: datetime.date) -> None:
         return
 
     enddate = date + relativedelta(days=1)
-    json = api_request(date, enddate)
+    json = stats_api_request(date, enddate)
     insert_daily_entry(db, date, json['submission_count'], json['submitters'])
     print(f"Day {date} inserted")
 
 
-def collect_daily(db: Database):
+def collect_daily(db: Database) -> None:
     from main import settings
 
     date = datetime.date(settings.DAILY_START[0], settings.DAILY_START[1], 1)

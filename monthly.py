@@ -4,7 +4,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from database import Database
-from collector import api_request
+from collector import stats_api_request
 from main import settings
 
 def create_monthly_table(db: Database) -> None:
@@ -68,7 +68,7 @@ def get_month(db: Database, year: int, month: int) -> None:
     startdate = datetime.date(year, month, 1)
     enddate = startdate + relativedelta(months=1)
 
-    json = api_request(startdate, enddate)
+    json = stats_api_request(startdate, enddate)
 
     insert_monthly_entry(db, year, month, json['submission_count'], json['submitters'])
     print(f"Month {year}/{month} inserted")
