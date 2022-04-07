@@ -65,3 +65,11 @@ def get_courses_between(db: Database, start: datetime.date, end: datetime.date) 
     print(f"query: {query}")
     entries = db.read_query(query)
     return entries
+
+
+def get_coursecode_by_id(db: Database, id: int) -> str:
+    query = f"""
+    SELECT code from course where id = {id};
+    """
+    entries = db.read_query(query)
+    return entries[0][0]

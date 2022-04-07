@@ -31,6 +31,27 @@ def week_exists(db: Database, date: datetime.date, course: int) -> bool:
         return False
 
 
+def build_weekly_dict(db: Database, start: datetime.date, end: datetime.date) -> dict:
+    query = f"""
+    SELECT * from weekly_courses where
+        year >= {start.isocalendar()[0]} and
+        week >= {start.isocalendar()[1]} and
+        year <= {end.isocalendar()[0]} and
+        week <= {end.isocalendar()[1]}
+        order by year,week;
+    """
+    entries = db.read_query(query)
+    courses = dict()
+    for entry in entries:
+        key = f"{entry[2]}-{entry[3]}"
+        if key not in courses:
+            courses[key] = dict()
+
+        courses[key][entry[1]] = (entry[4], entry[5])
+
+    return courses
+
+
 def insert_weekly_entry(
         db: Database,
         course: int,
