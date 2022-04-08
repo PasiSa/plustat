@@ -1,5 +1,3 @@
-import importlib
-import sys
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -7,7 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from database import Database
-from daily import build_daily_dict
+from daily import build_daily_dict, build_daily_courses_dict
+from courses import count_totals, draw_courses, make_datalist
 
 
 def daily_common(
@@ -69,21 +68,6 @@ def daily_submitters(data: dict, startdate: datetime.date):
     )
 
 
-# FIXME: replace with daily variant or remove
-# def monthly_submissions_submitters(data):
-#     y = []
-#     for key in data:
-#         y.append(int(data[key][3]/data[key][4]))
-    
-#     daily_common(
-#         y,
-#         20,
-#         list(range(40, 160, 40)),
-#         'submissions / submitter',
-#         'submissions-submitters.png',
-#     )
-
-
 def draw_daily(db: Database):
     from main import settings
 
@@ -95,3 +79,50 @@ def draw_daily(db: Database):
         daily_submitters(data, date)
         #daily_submissions_submitters(data)
         date = date + relativedelta(months=1)
+
+
+def draw_daily_courses(
+        db: Database,
+        processed: dict,
+        startdate: datetime.date,
+        enddate: datetime.date,
+        ylabel: str,
+        filename: str,
+        ) -> None:
+
+    mondays = range((7 - startdate.weekday()), len(processed['other']), 7)
+    xlabels = list()
+    for day in mondays:
+        d = startdate + relativedelta(days=day)
+        xlabels.append(f"{d.day:02d}/{d.month:02d}")
+    draw_courses(db, processed, startdate, enddate, ylabel, mondays, xlabels, filename)
+
+
+def produce_daily_courses(db: Database, start: datetime.date, end: datetime.date) -> None:
+    from main import settings
+    
+    data = build_daily_courses_dict(db, start, end)
+
+    (totals, alltotal) = count_totals(data)
+
+    sorted_total = sorted(totals.items(), key=lambda k: k[1][0], reverse=True )
+
+    dataset = make_datalist(data, sorted_total, alltotal, 0)
+    draw_daily_courses(
+        db,
+        dataset,
+        start,
+        end,
+        "submissions / day",
+        f"{settings.OUTPUT_DIR}/submissions-courses-daily-latest.png",
+    )
+
+    dataset = make_datalist(data, sorted_total, alltotal, 1)
+    draw_daily_courses(
+        db,
+        dataset,
+        start,
+        end,
+        "submitters / day",
+        f"{settings.OUTPUT_DIR}/submitters-courses-daily-latest.png",
+    )

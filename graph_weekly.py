@@ -6,7 +6,7 @@ import numpy as np
 
 from database import Database
 from weekly import build_weekly_dict
-from courses import get_coursecode_by_id
+from courses import get_coursecode_by_id, make_datalist
 
 
 def draw_weekly(
@@ -19,7 +19,6 @@ def draw_weekly(
         ) -> None:
 
     x = 0.5 + np.arange(len(processed['other']))
-    startweek = startdate.isocalendar()[1]
     xticks = range(0, len(processed['other']), 2)
     fig, ax = plt.subplots(figsize=(12,6))
     bars = [0] * len(processed['other'])
@@ -43,26 +42,6 @@ def draw_weekly(
     ax.legend()
     ax.set_ylabel(ylabel)
     plt.savefig(filename)
-
-
-def make_datalist(data: dict, sorted_total: dict, alltotal: dict, idx: int) -> dict:
-    processed = dict()
-    for key in data:
-        sa = alltotal[key][idx]
-        for i in range(0,5):
-            if sorted_total[i][0] not in processed:
-                processed[sorted_total[i][0]] = list()
-
-            if sorted_total[i][0] in data[key]:
-                processed[sorted_total[i][0]].append(data[key][sorted_total[i][0]][idx])
-                sa -= data[key][sorted_total[i][0]][idx]
-            else:
-                processed[sorted_total[i][0]].append(0)
-
-        if 'other' not in processed:
-            processed['other'] = list()
-        processed['other'].append(sa)
-    return processed
 
 
 def produce_weekly(db: Database, start: datetime.date, end: datetime.date) -> None:

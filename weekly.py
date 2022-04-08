@@ -70,7 +70,6 @@ def insert_weekly_entry(
 
 def get_week(db: Database, start: datetime.date, course: int) -> None:
     if week_exists(db, start, course):
-        print(f"Week {start}, course {course} already exists")
         return
 
     enddate = start + relativedelta(days=7)
