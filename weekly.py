@@ -78,11 +78,9 @@ def get_week(db: Database, start: datetime.date, course: int) -> None:
     print(f"Week {start}, course {course} inserted")
 
 
-def collect_weekly(db: Database) -> None:
+def collect_weekly(db: Database, date: datetime.date, enddate: datetime.date) -> None:
     from main import settings
 
-    date = datetime.date.fromisocalendar(settings.WEEKLY_START[0], settings.WEEKLY_START[1], 1)
-    enddate = datetime.date.fromisocalendar(settings.WEEKLY_END[0], settings.WEEKLY_END[1], 1)
     while date <= enddate:
         end = date + relativedelta(days=7)
         courses = get_courses_between(db, date, end)

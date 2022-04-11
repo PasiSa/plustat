@@ -13,6 +13,10 @@ from courses import create_course_table, get_courses
 settings = importlib.import_module(sys.argv[1])
 
 
+# This main function should not be used anymore in its current form.
+# Rather, we should focus on periodic* scripts that are run by cron.
+# Additional graphs can be created case-by-case basis by separate scripts.
+# Also many of the settings refered to here are not needed anymore.
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("You need to specify config gile as an argument.")
