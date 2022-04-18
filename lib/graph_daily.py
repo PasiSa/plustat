@@ -4,9 +4,10 @@ from dateutil.relativedelta import relativedelta
 import matplotlib.pyplot as plt
 import numpy as np
 
-from database import Database
-from daily import build_daily_dict, build_daily_courses_dict
-from courses import count_totals, draw_courses, make_datalist
+from lib.database import Database
+from lib.daily import build_daily_dict, build_daily_courses_dict
+from lib.courses import count_totals, draw_courses, make_datalist
+from lib.settings import settings
 
 
 def daily_common(
@@ -39,7 +40,7 @@ def daily_common(
 
 
 def daily_submissions(data: dict, startdate: datetime.date):
-    from main import settings
+    #from main import settings
     y = []
     for key in data:
         y.append(data[key][4])
@@ -54,7 +55,7 @@ def daily_submissions(data: dict, startdate: datetime.date):
 
 
 def daily_submitters(data: dict, startdate: datetime.date):
-    from main import settings
+    #from main import settings
     y = []
     for key in data:
         y.append(data[key][5])
@@ -69,8 +70,6 @@ def daily_submitters(data: dict, startdate: datetime.date):
 
 
 def draw_daily(db: Database):
-    from main import settings
-
     date = datetime.date(settings.DAILY_START[0], settings.DAILY_START[1], 1)
     enddate = datetime.date(settings.DAILY_END[0], settings.DAILY_END[1], 1)
     while (date <= enddate):
@@ -99,8 +98,6 @@ def draw_daily_courses(
 
 
 def produce_daily_courses(db: Database, start: datetime.date, end: datetime.date) -> None:
-    from main import settings
-    
     data = build_daily_courses_dict(db, start, end)
 
     (totals, alltotal) = count_totals(data)

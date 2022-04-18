@@ -3,8 +3,9 @@ import datetime
 import matplotlib.pyplot as plt
 import numpy as np
 
-from database import Database
-from collector import api_request
+from lib.database import Database
+from lib.collector import api_request
+from lib.settings import settings
 
 def create_course_table(db: Database) -> None:
     query = """
@@ -44,8 +45,6 @@ def insert_course(db: Database, course: dict) -> None:
 
 
 def get_courses(db: Database) -> None:
-    from main import settings
-    
     url = f"{settings.BASE_URL}/api/v2/courses/"
     repeat = True
     while repeat:

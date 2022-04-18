@@ -1,18 +1,15 @@
-import importlib
 import sys
 import datetime
 from dateutil.relativedelta import relativedelta
 
-from database import Database
-from courses import get_courses, get_courses_between
-from daily import get_day_courses
-from graph_daily import produce_daily_courses
-
-settings = importlib.import_module(sys.argv[1])
+from lib.database import Database
+from lib.courses import get_courses_between
+from lib.daily import get_day_courses
+from lib.graph_daily import produce_daily_courses
+from lib.settings import settings
 
 
 def collect_recent(db: Database, date: datetime.date, end: datetime.date) -> None:
-    get_courses(db)
     courses = get_courses_between(db, date, end)
 
     while date < end:
@@ -22,7 +19,7 @@ def collect_recent(db: Database, date: datetime.date, end: datetime.date) -> Non
 
 
 if __name__ == '__main__':
-    print(f"--- Starting plustat/periodic.py at {datetime.datetime.now()} ---")
+    print(f"--- Starting plustat/recent_daily.py at {datetime.datetime.now()} ---")
     if len(sys.argv) < 2:
         print("You need to specify config gile as an argument.")
         exit(-1)
@@ -32,4 +29,4 @@ if __name__ == '__main__':
     start = end - relativedelta(days=settings.RECENT_DAYS)
     collect_recent(db, start, end)
     produce_daily_courses(db, start, end)
-    print(f"--- Ending plustat/periodic.py at {datetime.datetime.now()} ---")
+    print(f"--- Ending plustat/recent_daily.py at {datetime.datetime.now()} ---")

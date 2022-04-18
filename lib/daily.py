@@ -1,8 +1,9 @@
 import datetime
 from dateutil.relativedelta import relativedelta
 
-from database import Database
-from collector import stats_api_request, stats_course_api_request
+from lib.database import Database
+from lib.collector import stats_api_request, stats_course_api_request
+from lib.settings import settings
 
 
 # FIXME: should use datetime instead of three separate integers for date
@@ -137,8 +138,6 @@ def get_day_courses(db: Database, date: datetime.date, course: int) -> None:
 
 
 def collect_daily(db: Database) -> None:
-    from main import settings
-
     date = datetime.date(settings.DAILY_START[0], settings.DAILY_START[1], 1)
     enddate = datetime.date(settings.DAILY_END[0], settings.DAILY_END[1], 1)
     while date <= enddate:

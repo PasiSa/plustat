@@ -1,9 +1,10 @@
 import datetime
 from dateutil.relativedelta import relativedelta
 
-from database import Database
-from courses import get_courses_between
-from collector import stats_course_api_request
+from lib.database import Database
+from lib.courses import get_courses_between
+from lib.collector import stats_course_api_request
+from lib.settings import settings
 
 def create_weekly_courses_table(db: Database) -> None:
     query = """
@@ -79,8 +80,6 @@ def get_week(db: Database, start: datetime.date, course: int) -> None:
 
 
 def collect_weekly(db: Database, date: datetime.date, enddate: datetime.date) -> None:
-    from main import settings
-
     while date <= enddate:
         end = date + relativedelta(days=7)
         courses = get_courses_between(db, date, end)

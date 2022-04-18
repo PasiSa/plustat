@@ -4,9 +4,9 @@ from dateutil.relativedelta import relativedelta
 import matplotlib.pyplot as plt
 import numpy as np
 
-from database import Database
-from weekly import build_weekly_dict
-from courses import get_coursecode_by_id, make_datalist
+from lib.database import Database
+from lib.weekly import build_weekly_dict
+from lib.courses import get_coursecode_by_id, make_datalist
 
 
 def draw_weekly(

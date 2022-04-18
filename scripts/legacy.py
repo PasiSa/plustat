@@ -2,15 +2,15 @@ import importlib
 import sys
 import datetime
 
-from database import Database
-from daily import create_daily_courses_table, create_daily_table, collect_daily
-from weekly import collect_weekly, create_weekly_courses_table
-from graph_daily import draw_daily
-from graph_weekly import produce_weekly
-from courses import create_course_table, get_courses
+from lib.database import Database
+from lib.daily import create_daily_courses_table, create_daily_table, collect_daily
+from lib.weekly import collect_weekly, create_weekly_courses_table
+from lib.graph_daily import draw_daily
+from lib.graph_weekly import produce_weekly
+from lib.courses import create_course_table, get_courses
 
 
-settings = importlib.import_module(sys.argv[1])
+#settings = importlib.import_module(sys.argv[1])
 
 
 # This main function should not be used anymore in its current form.
