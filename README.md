@@ -25,8 +25,13 @@ file is a python file, but the .py suffix is left out from command line.
 
   * `python3 -m scripts.update_courses <config_file>`: Update the list of courses in plustat database by fetching all current courses from A+ API.
 
+  * `python3 -m scripts.recent_hourly <config_file>`: Produce hourly submission graphs
+  for last `RECENT_HOURS` hours of submissions. `RECENT_HOURS` is defined in configuration
+  settings.
+
   * `python3 -m scripts.recent_daily <config_file>`: Produce daily submission graphs
-  for last 30 days of submissions.
+  for last `RECENT_DAYS` days of submissions. `RECENT_DAYS` is defined in configuration
+  settings. 
 
   * `python3 -m scripts.recent_weekly <config_file>`: Produce weekly submission graphs
   for the current semester.
@@ -47,4 +52,6 @@ Following parameters are needed:
 
   * `OUTPUT_DIR`: directory where the produced graphs are stored.
 
-  * `RECENT_DAYS`: how many days are shown by recent_daily script.
+  * `RECENT_DAYS`: how many days are shown by `recent_daily` script.
+
+  * `RECENT_HOURS`: how many days are shown by `recent_hourly` script.

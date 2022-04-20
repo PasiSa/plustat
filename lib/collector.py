@@ -29,3 +29,14 @@ def stats_course_api_request(
 
     url = f"{settings.BASE_URL}/api/v2/courses/{course}/statistics/?starttime={startdate.year}-{startdate.month:02d}-{startdate.day:02d}T00:00&endtime={enddate.year}-{enddate.month:02d}-{enddate.day:02d}T00:00"
     return api_request(url)
+
+
+# FIXME: this and above should be combined
+def stats_course_api_request_hourly(
+        course: int,
+        startdate: datetime.datetime,
+        enddate: datetime.datetime
+        ) -> dict:
+
+    url = f"{settings.BASE_URL}/api/v2/courses/{course}/statistics/?starttime={startdate.year}-{startdate.month:02d}-{startdate.day:02d}T{startdate.hour:02d}:00&endtime={enddate.year}-{enddate.month:02d}-{enddate.day:02d}T{enddate.hour:02d}:00"
+    return api_request(url)
