@@ -4,10 +4,10 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
-from database import Database
-from monthly import build_monthly_dict
+from lib.database import Database
+from lib.monthly import build_monthly_dict
+from lib.settings import settings
 
-settings = None
 
 def monthly_common(ydata, tickinterval, hlines, ylabel, filename):
     x = 0.5 + np.arange(len(ydata))
@@ -33,8 +33,6 @@ def monthly_common(ydata, tickinterval, hlines, ylabel, filename):
 
 
 def monthly_submissions(data):
-    from main import settings
-
     y = []
     for key in data:
         y.append(data[key][3])

@@ -3,9 +3,9 @@ import sys
 import datetime
 from dateutil.relativedelta import relativedelta
 
-from database import Database
-from collector import stats_api_request
-from main import settings
+from lib.database import Database
+from lib.collector import stats_api_request
+
 
 def create_monthly_table(db: Database) -> None:
     query = """
@@ -74,9 +74,7 @@ def get_month(db: Database, year: int, month: int) -> None:
     print(f"Month {year}/{month} inserted")
 
 
-def do_monthly(db: Database):
-    date = datetime.date(settings.MONTHLY_START[0], settings.MONTHLY_START[1], 1)
-    enddate = datetime.date(settings.MONTHLY_END[0], settings.MONTHLY_END[1], 1)
+def collect_monthly(db: Database, date: datetime.date, enddate: datetime.date) -> None:
     while date <= enddate:
         get_month(db, date.year, date.month)
         date = date + relativedelta(months=1)
@@ -88,12 +86,5 @@ if __name__ == '__main__':
         exit(-1)
 
     settings = importlib.import_module(sys.argv[1])
-    #db = create_connection(settings.DB_FILE)
     db = Database()
     #create_monthly_table(db)
-
-    # Just testing
-    #monthly = build_monthly_dict(db)
-    #print(monthly)
-
-    do_monthly(db)
